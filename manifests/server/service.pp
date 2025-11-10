@@ -13,7 +13,7 @@ class samba::server::service (
     require    => Class['samba::server::config']
   }
 
-  if $samba::server::params::nmbd_name != undef {
+  if defined('$samba::server::params::nmbd_name') {
     service { $samba::server::params::nmbd_name :
       ensure     => $ensure,
       hasrestart => false,
