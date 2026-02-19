@@ -1,12 +1,12 @@
 # == Class samba::server::params
 #
 class samba::server::params {
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Redhat': { $service_name = 'smb' }
     'Debian': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Debian': {
-          case $::operatingsystemmajrelease {
+          case $facts['os']['release']['major'] {
             '8' : { $service_name = 'smbd' }
             default: { $service_name = 'samba' }
           }
@@ -28,11 +28,11 @@ class samba::server::params {
     # Factor 1.7.0 <http://projects.puppetlabs.com/issues/17029>, so
     # adding workaround.
     'Linux': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Gentoo':  { $service_name = 'samba' }
-        default: { fail("${::operatingsystem} is not supported by this module.") }
+        default: { fail("${facts['os']['name']} is not supported by this module.") }
       }
     }
-    default: { fail("${::osfamily} is not supported by this module.") }
+    default: { fail("${facts['os']['family']} is not supported by this module.") }
   }
 }
